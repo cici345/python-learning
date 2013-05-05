@@ -1,0 +1,85 @@
+import time
+
+print "*** Step 1 ***"
+def foo():
+    print "in foo()"
+    
+foo()
+
+
+print "*** Step 2 ***"
+
+def foo():
+    start = time.clock()
+    print "in foo()"
+    end = time.clock()
+    print 'used:', end-start
+    
+foo()
+
+
+print "*** Step 3 ***"
+
+def foo():
+    print 'in foo()'
+    
+def timeit(func):
+    start = time.clock()
+    func()
+    end = time.clock()
+    print 'used:', end-start
+    
+timeit(foo)
+
+
+print "*** Step 4 ***"
+
+def foo():
+    print 'in foo()'
+    
+def timeit(func):
+    def wrapper():
+        start = time.clock()
+        func()
+        end = time.clock()
+        print 'used:', end-start
+    return wrapper
+
+foo = timeit(foo)
+foo()
+
+
+print "*** Step 5 ***"
+def timeit(func):
+    def wrapper():
+        start = time.clock()
+        func()
+        end = time.clock()
+        print 'used:', end-start
+    return wrapper
+
+@timeit
+def foo():
+    print 'in foo()'
+    
+foo()
+
+
+print "*** Step 6 ***"
+import functools
+
+def timeit(func):
+    @functools.wraps(func)
+    def wrapper():
+        start = time.clock()
+        func()
+        end = time.clock()
+        print 'used:', end-start
+    return wrapper
+
+@timeit
+def foo():
+    print "in foo()"
+    
+foo()
+print foo.__name__
